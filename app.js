@@ -1,8 +1,9 @@
 import express from 'express'
 import * as dotenv from 'dotenv'
 
-import {notFound} from './middleware/not-found.js'
-import {errorHandlerMiddleware} from './middleware/error-handler.js'
+import { connectDB } from './db/connect.js'
+import { notFound } from './middleware/not-found.js'
+import { errorHandlerMiddleware } from './middleware/error-handler.js'
 
 dotenv.config()
 const app = express()
@@ -20,8 +21,9 @@ const port = process.env.PORT || 3000
 
 const start = async () => {
   try {
-    //   connect DB
+    await connectDB(process.env.MONGO_URI)
     app.listen(port, console.log(`Server is listening on port ${port}...`))
+    console.log('DB is connected...')
   } catch (e) {
     console.log(e)
   }
